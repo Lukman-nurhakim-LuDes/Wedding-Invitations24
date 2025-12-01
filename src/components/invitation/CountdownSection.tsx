@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Calendar } from "lucide-react";
+import { useEventSettings } from "@/hooks/useEventSettings";
 
 interface TimeLeft {
   days: number;
@@ -9,9 +10,13 @@ interface TimeLeft {
 }
 
 const CountdownSection = () => {
-  // Set target date - ubah sesuai tanggal acara
-  const targetDate = new Date("2025-12-31T19:00:00").getTime();
-  
+  const { data: settings } = useEventSettings();
+  const countdownData = settings?.countdown || {
+    targetDate: "2025-12-31T19:00:00",
+    title: "Hitung Mundur",
+    subtitle: "Menuju Malam Penuh Keajaiban"
+  };
+
   const [timeLeft, setTimeLeft] = useState<TimeLeft>({
     days: 0,
     hours: 0,
@@ -20,6 +25,8 @@ const CountdownSection = () => {
   });
 
   useEffect(() => {
+    const targetDate = new Date(countdownData.targetDate).getTime();
+    
     const calculateTimeLeft = () => {
       const now = new Date().getTime();
       const difference = targetDate - now;
@@ -38,20 +45,20 @@ const CountdownSection = () => {
     const timer = setInterval(calculateTimeLeft, 1000);
 
     return () => clearInterval(timer);
-  }, [targetDate]);
+  }, [countdownData.targetDate]);
 
   const FlipCard = ({ value, label }: { value: number; label: string }) => {
     const displayValue = value.toString().padStart(2, '0');
     
     return (
-      <div className="flex flex-col items-center gap-3">
-        <div className="relative w-24 h-28 md:w-32 md:h-36">
+      <div className="flex flex-col items-center gap-2 sm:gap-3">
+        <div className="relative w-20 h-24 sm:w-24 sm:h-28 md:w-32 md:h-36">
           {/* Flip Card Container */}
           <div className="flip-card-container">
             {/* Top Half */}
             <div className="flip-card-top">
-              <div className="flip-card-content bg-gradient-to-b from-primary to-primary/90 border-4 border-gold/30">
-                <span className="text-4xl md:text-5xl font-bold text-gold">
+              <div className="flip-card-content bg-gradient-to-b from-primary to-primary/90 border-2 sm:border-4 border-gold/30">
+                <span className="text-3xl sm:text-4xl md:text-5xl font-bold text-gold">
                   {displayValue}
                 </span>
               </div>
@@ -59,23 +66,23 @@ const CountdownSection = () => {
             
             {/* Bottom Half */}
             <div className="flip-card-bottom">
-              <div className="flip-card-content bg-gradient-to-t from-primary/80 to-primary border-4 border-gold/30">
-                <span className="text-4xl md:text-5xl font-bold text-gold">
+              <div className="flip-card-content bg-gradient-to-t from-primary/80 to-primary border-2 sm:border-4 border-gold/30">
+                <span className="text-3xl sm:text-4xl md:text-5xl font-bold text-gold">
                   {displayValue}
                 </span>
               </div>
             </div>
             
             {/* Middle Line */}
-            <div className="absolute top-1/2 left-0 right-0 h-1 bg-background/30 transform -translate-y-1/2 z-10" />
+            <div className="absolute top-1/2 left-0 right-0 h-0.5 sm:h-1 bg-background/30 transform -translate-y-1/2 z-10" />
           </div>
           
           {/* Glow Effect */}
-          <div className="absolute inset-0 rounded-xl bg-gold/0 blur-xl group-hover:bg-gold/20 transition-all duration-500 -z-10" />
+          <div className="absolute inset-0 rounded-lg sm:rounded-xl bg-gold/0 blur-xl group-hover:bg-gold/20 transition-all duration-500 -z-10" />
         </div>
         
         {/* Label */}
-        <span className="text-gold text-sm md:text-base font-semibold uppercase tracking-wider">
+        <span className="text-gold text-xs sm:text-sm md:text-base font-semibold uppercase tracking-wider">
           {label}
         </span>
       </div>
@@ -91,24 +98,24 @@ const CountdownSection = () => {
       </div>
       
       {/* Content */}
-      <div className="relative z-10 max-w-6xl mx-auto px-6">
+      <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6">
         {/* Header */}
-        <div className="text-center space-y-4 mb-16 animate-slide-up">
-          <div className="flex items-center justify-center gap-3 mb-4">
-            <Calendar className="w-8 h-8 text-gold" />
-            <h2 className="text-4xl md:text-5xl font-bold text-gold">
-              Hitung Mundur
+        <div className="text-center space-y-3 sm:space-y-4 mb-12 sm:mb-16 animate-slide-up">
+          <div className="flex items-center justify-center gap-2 sm:gap-3 mb-3 sm:mb-4">
+            <Calendar className="w-6 h-6 sm:w-8 sm:h-8 text-gold" />
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gold">
+              {countdownData.title}
             </h2>
-            <Calendar className="w-8 h-8 text-gold" />
+            <Calendar className="w-6 h-6 sm:w-8 sm:h-8 text-gold" />
           </div>
-          <div className="h-1 w-32 bg-gold/50 mx-auto" />
-          <p className="text-lg md:text-xl text-foreground/70">
-            Menuju Malam Penuh Keajaiban
+          <div className="h-1 w-24 sm:w-32 bg-gold/50 mx-auto" />
+          <p className="text-base sm:text-lg md:text-xl text-foreground/70 px-4">
+            {countdownData.subtitle}
           </p>
         </div>
         
         {/* Countdown Cards */}
-        <div className="flex flex-wrap justify-center gap-6 md:gap-8 animate-fade-in">
+        <div className="flex flex-wrap justify-center gap-4 sm:gap-6 md:gap-8 animate-fade-in">
           <FlipCard value={timeLeft.days} label="Hari" />
           <FlipCard value={timeLeft.hours} label="Jam" />
           <FlipCard value={timeLeft.minutes} label="Menit" />
@@ -116,8 +123,8 @@ const CountdownSection = () => {
         </div>
         
         {/* Bottom Text */}
-        <div className="text-center mt-12">
-          <p className="text-foreground/60 text-base md:text-lg">
+        <div className="text-center mt-8 sm:mt-12 px-4">
+          <p className="text-foreground/60 text-sm sm:text-base md:text-lg">
             Tandai kalender Anda dan bersiaplah untuk malam yang tak terlupakan
           </p>
         </div>
