@@ -1,4 +1,5 @@
 import WelcomeSection from "@/components/invitation/WelcomeSection";
+import StorytellingSection from "@/components/invitation/StorytellingSection";
 import VenueSection from "@/components/invitation/VenueSection";
 import TimelineSection from "@/components/invitation/TimelineSection";
 import DressCodeSection from "@/components/invitation/DressCodeSection";
@@ -10,6 +11,7 @@ const Invitation = () => {
   return (
     <div className="w-full overflow-x-hidden">
       <WelcomeSection />
+      <StorytellingSection />
       <VenueSection />
       <TimelineSection />
       <DressCodeSection />
