@@ -1,23 +1,26 @@
 import { Sparkles } from "lucide-react";
 import satinBerryBg from "@/assets/satin-berry-bg.jpg";
 import satinEmeraldBg from "@/assets/satin-emerald-bg.jpg";
+import eveningGownImg from "@/assets/dress-evening-gown.jpg";
+import blackTieImg from "@/assets/dress-black-tie.jpg";
+import cocktailImg from "@/assets/dress-cocktail.jpg";
 
 const DressCodeSection = () => {
   const dressCodeImages = [
     {
       title: "Formal Evening Gown",
       description: "Gaun malam formal dengan sentuhan elegan",
-      bgClass: "bg-primary"
+      image: eveningGownImg
     },
     {
       title: "Black Tie Suit",
       description: "Setelan formal hitam dengan dasi kupu-kupu",
-      bgClass: "bg-secondary"
+      image: blackTieImg
     },
     {
       title: "Cocktail Dress",
       description: "Dress cocktail dengan aksen glamour",
-      bgClass: "bg-gold/80"
+      image: cocktailImg
     }
   ];
 
@@ -62,14 +65,14 @@ const DressCodeSection = () => {
               style={{ animationDelay: `${index * 0.15}s` }}
             >
               <div className="relative overflow-hidden rounded-2xl border-4 border-gold/30 elegant-shadow group-hover:border-gold/60 transition-all duration-500">
-                {/* Placeholder Image with Gradient */}
-                <div className={`aspect-[3/4] ${item.bgClass} relative overflow-hidden`}>
+                {/* Dress Code Image */}
+                <div className="aspect-[3/4] relative overflow-hidden">
+                  <img 
+                    src={item.image} 
+                    alt={item.title}
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-                  
-                  {/* Icon or Pattern */}
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <Sparkles className="w-24 h-24 text-gold/30" />
-                  </div>
                 </div>
                 
                 {/* Card Content */}
